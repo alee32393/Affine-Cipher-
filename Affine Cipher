@@ -1,0 +1,94 @@
+def main():
+
+    going = 'y'
+    
+    while going == 'y':
+    
+        choice = int(input('enter 1 for encryption or 2 for decryption or 3 for brutal decryption:'))
+        if(choice == 1):
+            A = int(input('enter a number for key A that is coprime to 26:'))
+            B = int(input('enter a number for key B from 0 to 25:'))
+            mess = str(input('enter a string of LOWER CASE:'))
+            encrypt(mess,A,B)
+            going = 'n'
+        elif(choice == 2):
+            A = int(input('enter a number for key A that is coprime to 26:'))
+            B = int(input('enter a number for key B from 0 to 25:'))
+            mess = str(input('enter a string of UPPER CASE:'))
+            decrypt(mess,A,B)
+            going = 'n'
+        elif(choice == 3):
+            mess = str(input('enter something to brutally decrypt in UPPER CASE letters:'))
+            A = 1
+            for B in range(26):
+                brute(mess, A,B)
+            going = 'n'
+        else:
+            print("wrong choice")
+            print('would you like to try again? enter y for yes or n for no:')
+            going = input('would you like to try again?')
+
+
+
+            #choices are displayed once a choice is made the A and B keys are asked user to give or it will automatically be given and ask for the message
+            #if the choices are not one program recoginizes then it keeps asking if user wants to keep going
+
+            
+def encrypt(mess,A,B):
+                secret = ''
+                if(mess.islower() and ((A % 2 == 1) and (A != 13)) and (0 <= B <= 25)):
+                    print('acceptable')
+                    index = 0
+                
+                    while index < len(mess):
+                            
+                            P = (ord(mess[index])-97) #prints ASCII number of the letter - 96
+                            C = ((A*P)+B)%26 #does the math 
+                            D = chr(int(C)+65)
+                            index = index + 1
+                            secret = secret + D
+                        
+        
+                else:
+                    print('not acceptable')
+                    
+                print(secret)
+    #encrypts the message, checks for lower case and the keys for validity, then it coverts the letters in each string one at a time
+    #and appends to an empty string and prints it
+def decrypt(mess,A,B):
+                delivery = ''                
+                if(mess.isupper() and ((A % 2 == 1) and (A != 13)) and (0 <= B <= 25)):
+                    print('acceptable')
+                    index = 0
+                    
+                    for i in range(26):
+                        if(i*A)%26 == 1:
+                            AI = i
+                            print("the multiinverse is ", AI)
+                
+                    while index < len(mess):
+                       C = (ord(mess[index])-65) 
+                       P = abs((AI*(C-B))%26)
+                       D = chr(int(P)+97)                      
+                       index = index + 1                          
+                       delivery = delivery + D
+                else:
+                    print('not acceptable')
+
+                print(delivery)
+            #decrypts message, checks for upper case message and key validty, does same thing as encrypt but also finds hte multiplicative inverse
+def brute(mess,A,B):
+    delivery = ''
+    if(mess.isupper()):
+        index = 0
+    while index < len(mess):
+        C = (ord(mess[index])-65) 
+        P = abs((A*(C-B))%26)
+        D = chr(int(P)+97)                      
+        index = index + 1                          
+        delivery = delivery + D
+    print("key",B, delivery)
+
+    #does same thing as decrypt but no multiplicative inverse, but because i do it in range for 26 it keeps printing the keys till 25
+main()
+
